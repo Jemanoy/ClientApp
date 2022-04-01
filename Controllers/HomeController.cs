@@ -12,14 +12,23 @@ namespace ClientApp.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly db_123payContext _context;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, db_123payContext context)
         {
-            _logger = logger;
+            this._logger = logger;
+            this._context = context;
         }
 
         public IActionResult Index()
         {
+            var result = _context.TblMerchants.ToList();
+            return View(result);
+        }
+
+        public IActionResult TransactionList()
+        {
+            var result = _context.TblPaymentTransactions.ToList();
             return View();
         }
 

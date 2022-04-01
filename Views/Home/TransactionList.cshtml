@@ -1,0 +1,83 @@
+﻿@model List<ClientApp.Models.ExistingModels.TblPaymentTransaction>
+
+@{
+    ViewData["Title"] = "Transaction";
+}
+
+<head>
+    <style>
+        .table {
+            height: 100%;
+        }
+    </style>
+</head>
+
+<div class="container-fluid">
+    <table class="table">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">Reference No</th>
+                <th scope="col">Account No</th>
+                <th scope="col">Account Name</th>
+                <th scope="col">Amount</th>
+                <th scope="col">Mobile No</th>
+                <th scope="col">Remarks</th>
+                <th scope="col">Merchant</th>
+                <th scope="col">Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model != null)
+            {
+                foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(a => item.ReferenceNo)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(a => item.AccountNo)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(a => item.AccountName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(a => item.Amount)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(a => item.MobileNumber)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(a => item.Remarks)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(a => item.MerchantId)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(a => item.TransactionDate)
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+    <nav aria-label="...">
+        <ul class="pagination">
+            <li class="page-item">
+                <a class="page-link bg-dark text-white" href="#" tabindex="-1">Previous</a>
+            </li>
+            <li class="page-item active">
+                <a class="page-link bg-dark text-white" href="#">1</a>
+            </li>
+            <li class="page-item">
+                <a class="page-link bg-dark text-white" href="#">2 <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="page-item">
+                <a class="page-link bg-dark text-white" href="#">3</a>
+            </li>
+            <li class="page-item">
+                <a class="page-link bg-dark text-white" href="#">Next</a>
+            </li>
+        </ul>
+    </nav>
+</div>

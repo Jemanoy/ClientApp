@@ -1,3 +1,4 @@
+using ClientApp.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -24,6 +25,8 @@ namespace ClientApp
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+
+            services.AddDbContext<db_123payContext>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

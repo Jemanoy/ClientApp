@@ -1,8 +1,131 @@
-﻿@{
+﻿@model List< ClientApp.Models.ExistingModels.TblMerchant>
+
+@{
     ViewData["Title"] = "Home Page";
 }
+<head>
+    <style>
+        .table{
+            height: 100%;
+        }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+        #add-container{
+            margin: 5px 5px 10px 5px;
+        }
+    </style>
+</head>
+
+<div>
+    <div id="add-container">
+        <div class="form-group">
+            <label for="reference_no">Reference No</label>
+            <input type="text" class="form-control" id="reference_no" readonly>
+        </div>
+        <div class="form-group">
+            <label for="account_no">Account No</label>
+            <input type="text" class="form-control" id="account_no">
+        </div>
+        <div class="form-group">
+            <label for="account_name">Account Name</label>
+            <input type="text" class="form-control" id="account_name">
+        </div>
+        <div class="form-group">
+            <label for="amount">Amount</label>
+            <input type="text" class="form-control" id="amount">
+        </div>
+        <div class="form-group">
+            <label for="mobile_no">Mobile No</label>
+            <input type="text" class="form-control" id="mobile_no">
+        </div>
+        <div class="form-group">
+            <label for="remarks">Remarks</label>
+            <input type="text" class="form-control" id="remarks">
+        </div>
+        <div class="form-group">
+            <label for="merchant">Merchant</label>
+            <select id="merchant" class="custom-select" aria-label="Default select example">
+                <option value="0" selected>Select merchant</option>
+                @if (Model != null)
+                {
+                    foreach (var items in Model)
+                    {
+                        <option value="@items.Id">@items.Name</option>
+                    }
+                }
+            </select>
+        </div>
+        <button type="button" id="btn_submit" class="btn btn-dark">Submit</button>
+    </div>
 </div>
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/sweetalert/sweetalert.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        //GET Reference Number
+        $.ajax({
+            url: 'https://localhost:44342/Transaction/reference-no',
+            type: 'GET',
+            async: false,
+            success: function (result) {
+                $('#reference_no').val(result);
+            },
+            error: function (XMLHttpRequest) {
+                console.log(XMLHttpRequest.responseText);
+            }
+        });
+
+        $('#btn_submit').click(function(e) {
+            e.preventDefault();
+
+            var account_no = $('#account_no').val();
+            var account_name = $('#account_name').val();
+            var amount = $('#amount').val();
+            var mobile_number = $('#mobile_no').val();
+            var remarks = $('#remarks').val();
+            var merchant_id = $('#merchant').val();
+
+            if (account_no == "" || account_name == "" || amount == "" || amount == "0" || mobile_number == "" || remarks == "" || merchant_id == 0) {
+                swal({
+                    title: 'Invalid!',
+                    type: 'error',
+                    text: 'Please fill up required fields.'
+                });
+                return false;
+            }
+
+            var result = {
+                accountNo: account_no,
+                accountName: account_name,
+                amount: amount,
+                mobileNumber: mobile_number,
+                remarks: remarks,
+                merchantId: merchant_id,
+            }
+
+            $.ajax({
+                url: 'https://localhost:44342/Transaction',
+                type: 'POST',
+                dataType: 'json',
+                contentType: 'application/json; charset=utf-8',
+                data: JSON.stringify(result),
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader('Accept', 'application/json');
+                },
+                success: function (response) {
+
+                    swal({
+                        title: 'Success!',
+                        type: 'success',
+                        text: 'Transaction Successful!'
+                    });
+                },
+                error: function (XMLHttpRequest, errorThrown, responseText) {
+                    console.log(XMLHttpRequest.responseText);
+                }
+            });
+        });
+
+    });
+</script>
